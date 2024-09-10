@@ -27,7 +27,7 @@ function CreatePropertyPage() {
               defaultValue="New Property"
             />
             <FormInput
-              name="name"
+              name="tagline"
               type="text"
               label="Tagline (Max 30 Characters)"
               defaultValue="Dream Getaway awaits you here!"
