@@ -172,6 +172,7 @@ export const fetchProperties = async ({
       ],
     },
     select: {
+      image: true,
       id: true,
       name: true,
       tagline: true,
