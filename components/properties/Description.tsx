@@ -7,7 +7,6 @@ function Description({ description }: { description: string }) {
   const [isFullDescriptionShown, setIsFullDescriptionShown] = useState(false);
   const words = description.split(" ");
   const isLongDescription = words.length > 100;
-
   const toggleDescription = () => {
     setIsFullDescriptionShown(!isFullDescriptionShown);
   };
@@ -16,6 +15,7 @@ function Description({ description }: { description: string }) {
     isLongDescription && !isFullDescriptionShown
       ? words.splice(0, 100).join(" ") + "..."
       : description;
+
   return (
     <article className="mt-4">
       <Title text="Description" />

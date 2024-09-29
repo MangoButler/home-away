@@ -10,7 +10,7 @@ type PropertyDetailsProps = {
 };
 
 function PropertyDetails({
-  details: { bedrooms, baths, guests, beds },
+  details: { bedrooms, beds, guests, baths },
 }: PropertyDetailsProps) {
   return (
     <p className="text-md font-light">
