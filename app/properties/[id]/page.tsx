@@ -43,7 +43,7 @@ async function PropertiesDetailsPage({ params }: { params: { id: string } }) {
       </header>
       <ImageContainer name={property.name} mainImage={property.image} />
       <section className="lg:grid lg:grid-cols-12 md:grid md:grid-cols-9 gap-x-12 mt-12">
-        <div className="lg:col-span-8 md:col-span-4">
+        <div className="lg:col-span-8 md:col-span-6">
           <div className="flex gap-4 items-center">
             <h1 className="text-lg font-bold">{property.name}</h1>
             <PropertyRating inPage propertyId={property.id} />
