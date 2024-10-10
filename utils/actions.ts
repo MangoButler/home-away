@@ -265,6 +265,12 @@ export const fetchPropertyDetails = (id: string) => {
     },
     include: {
       profile: true,
+      booking: {
+        select: {
+          checkIn: true,
+          checkOut: true,
+        },
+      },
     },
   });
 };
@@ -352,4 +358,35 @@ export const deleteReviewAction = async (prevState: { reviewId: string }) => {
   } catch (error) {
     return renderError(error);
   }
+};
+
+export async function fetchPropertyRating(propertyId: string) {
+  const result = await db.review.groupBy({
+    by: ["propertyId"],
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      rating: true,
+    },
+    where: {
+      propertyId,
+    },
+  });
+  return {
+    rating: result[0]?._avg.rating?.toFixed() ?? 0,
+    count: result[0]?._count?.rating ?? 0,
+  };
+}
+
+export const findExistingReview = async (
+  userId: string,
+  propertyId: string
+) => {
+  return db.review.findFirst({
+    where: {
+      profileId: userId,
+      propertyId: propertyId,
+    },
+  });
 };

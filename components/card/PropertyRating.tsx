@@ -1,15 +1,15 @@
 import { FaStar } from "react-icons/fa";
+import { fetchPropertyRating } from "@/utils/actions";
 
-function PropertyRating({
+async function PropertyRating({
   propertyId,
   inPage,
 }: {
   propertyId: string;
   inPage: boolean;
 }) {
-  //Add more  functionality
-  const rating = 4.7;
-  const count = 100;
+  const { rating, count } = await fetchPropertyRating(propertyId);
+  if (count === 0) return null;
   const className = `flex gap-1 items-center ${inPage ? "text-md" : "text-xs"}`;
   const countText = count > 1 ? "reviews" : "review";
   const countValue = `(${count}) ${inPage ? countText : ""}`;
