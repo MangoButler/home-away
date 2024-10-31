@@ -406,6 +406,13 @@ export const createBookingAction = async (prevState: {
   checkOut: Date;
 }) => {
   const user = await getAuthUser();
+  await db.booking.deleteMany({
+    where: {
+      profileId: user.id,
+      paymentStatus: false,
+    },
+  });
+  let bookingId: null | string = null;
   const { propertyId, checkIn, checkOut } = prevState;
   const property = await db.property.findUnique({
     where: {
@@ -436,10 +443,11 @@ export const createBookingAction = async (prevState: {
         propertyId,
       },
     });
+    bookingId = booking.id;
   } catch (error) {
     return renderError(error);
   }
-  redirect("/bookings");
+  redirect(`/checkout?bookingId=${bookingId}`);
 };
 
 export const fetchBookings = async () => {
@@ -447,6 +455,7 @@ export const fetchBookings = async () => {
   const bookings = await db.booking.findMany({
     where: {
       profileId: user.id,
+      paymentStatus: true,
     },
     include: {
       property: {
@@ -516,6 +525,7 @@ export const fetchRentals = async () => {
       const totalNightSum = await db.booking.aggregate({
         where: {
           propertyId: rental.id,
+          paymentStatus: true,
         },
         _sum: {
           totalNights: true,
@@ -606,6 +616,7 @@ export const fetchReservations = async () => {
   const user = await getAuthUser();
   const reservations = await db.booking.findMany({
     where: {
+      paymentStatus: true,
       property: {
         profileId: user.id,
       },
@@ -632,7 +643,11 @@ export const fetchStats = async () => {
 
   const usersCount = await db.profile.count();
   const propertiesCount = await db.property.count();
-  const bookingsCount = await db.booking.count();
+  const bookingsCount = await db.booking.count({
+    where: {
+      paymentStatus: true,
+    },
+  });
 
   return {
     usersCount,
@@ -649,6 +664,7 @@ export const fetchChartsData = async () => {
 
   const bookings = await db.booking.findMany({
     where: {
+      paymentStatus: true,
       createdAt: {
         gte: sixMonthsAgo,
       },
