@@ -1,8 +1,9 @@
+import { string } from "zod";
 import { Card, CardHeader } from "../ui/card";
 
 type StatsCardProps = {
   title: string;
-  value: number;
+  value: number | string;
 };
 
 function StatsCard({ title, value }: StatsCardProps) {
